@@ -6,7 +6,11 @@ by Sirius
 shlex | Designing + Programming
 iRay  | Programming
 
-With my modifications
+TODO:
+	- Test OpenCloseKey changes and if you can set a CreateKeybind to change that bind value [NEEDS TESTING]
+	- Remove existing forced notifications
+	- Create easy way to change background color of CreateLabels [NEEDS TESTING]
+	- 
 
 ]]
 
@@ -100,7 +104,8 @@ local RayfieldLibrary = {
 			InputBackground = Color3.fromRGB(31, 159, 71),
 			InputStroke = Color3.fromRGB(19, 65, 31),
 			PlaceholderColor = Color3.fromRGB(178, 178, 178)
-		}
+		},
+		OpenCloseKey = "RightShift"
 	}
 }
 
@@ -157,7 +162,6 @@ local LoadingFrame = Main.LoadingFrame
 local TabList = Main.TabList
 
 Rayfield.DisplayOrder = 100
-LoadingFrame.Version.Text = Release
 
 
 -- Variables
@@ -171,6 +175,8 @@ local Debounce = false
 local Notifications = Rayfield.Notifications
 
 local SelectedTheme = RayfieldLibrary.Theme.Default
+
+Rayfield.OpenCloseKey = "RightShift"
 
 function ChangeTheme(ThemeName)
 	SelectedTheme = RayfieldLibrary.Theme[ThemeName]
@@ -638,7 +644,7 @@ end
 
 function Hide()
 	Debounce = true
-	RayfieldLibrary:Notify({Title = "Interface Hidden", Content = "The interface has been hidden, you can unhide the interface by tapping RightShift", Duration = 7})
+	RayfieldLibrary:Notify({Title = "Interface Hidden", Content = "The interface has been hidden, you can unhide the interface by tapping your Open/Close key", Duration = 7})
 	TweenService:Create(Main, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {Size = UDim2.new(0, 470, 0, 400)}):Play()
 	TweenService:Create(Main.Topbar, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {Size = UDim2.new(0, 470, 0, 45)}):Play()
 	TweenService:Create(Main, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {BackgroundTransparency = 1}):Play()
@@ -1577,6 +1583,10 @@ function RayfieldLibrary:CreateWindow(Settings)
 			function LabelValue:Set(NewLabel)
 				Label.Title.Text = NewLabel
 			end
+			
+			function LabelValue:Color(NewColor)
+				Label.BackgroundColor3 = NewColor
+			end
 
 			return LabelValue
 		end
@@ -1903,7 +1913,7 @@ function RayfieldLibrary:CreateWindow(Settings)
 			UserInputService.InputBegan:Connect(function(input, processed)
 
 				if CheckingForKey then
-					if input.KeyCode ~= Enum.KeyCode.Unknown and input.KeyCode ~= Enum.KeyCode.RightShift then
+					if input.KeyCode ~= Enum.KeyCode.Unknown and input.KeyCode ~= Enum.KeyCode[RayfieldLibrary.OpenCloseKey] then
 						local SplitMessage = string.split(tostring(input.KeyCode), ".")
 						local NewKeyNoEnum = SplitMessage[3]
 						Keybind.KeybindFrame.KeybindBox.Text = tostring(NewKeyNoEnum)
@@ -2324,7 +2334,7 @@ Topbar.Hide.MouseButton1Click:Connect(function()
 end)
 
 UserInputService.InputBegan:Connect(function(input, processed)
-	if (input.KeyCode == Enum.KeyCode.RightShift and not processed) then
+	if (input.KeyCode == Enum.KeyCode[Rayfield.OpenCloseKey] and not processed) then
 		if Debounce then return end
 		if Hidden then
 			Hidden = false
@@ -2363,5 +2373,6 @@ function RayfieldLibrary:LoadConfiguration()
 		end)
 	end
 end
+
 
 return RayfieldLibrary
