@@ -176,7 +176,7 @@ local Notifications = Rayfield.Notifications
 
 local SelectedTheme = RayfieldLibrary.Theme.Default
 
-Rayfield.OpenCloseKey = "RightShift"
+RayfieldLibrary.OpenCloseKey = "RightShift"
 
 function ChangeTheme(ThemeName)
 	SelectedTheme = RayfieldLibrary.Theme[ThemeName]
@@ -2334,7 +2334,7 @@ Topbar.Hide.MouseButton1Click:Connect(function()
 end)
 
 UserInputService.InputBegan:Connect(function(input, processed)
-	if (input.KeyCode == Enum.KeyCode[Rayfield.OpenCloseKey] and not processed) then
+	if (input.KeyCode == Enum.KeyCode[RayfieldLibrary.OpenCloseKey] and not processed) then
 		if Debounce then return end
 		if Hidden then
 			Hidden = false
