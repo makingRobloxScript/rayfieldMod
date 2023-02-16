@@ -104,9 +104,9 @@ local RayfieldLibrary = {
 			InputBackground = Color3.fromRGB(31, 159, 71),
 			InputStroke = Color3.fromRGB(19, 65, 31),
 			PlaceholderColor = Color3.fromRGB(178, 178, 178)
-		},
-		OpenCloseKey = "RightShift"
-	}
+		}	
+	},
+	OpenCloseKey = "RightShift"
 }
 
 
